@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Browser</string>
     <string name="action_settings">Settings</string>
+    
+    <string name="admob_publisher_id">ca-app-pub-4608882990517146~3472617985</string>
+    <string name="admob_interensial_id">ca-app-pub-4608882990517146/3556502178</string>
 </resources>

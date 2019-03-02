@@ -18,12 +18,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+
 public class MainActivity extends AppCompatActivity {
     //deklarasi
     private WebView webView;
     private EditText etUrl;
     private Button btnCari;
     ProgressBar pg;
+    //iklan
+    private AdView madView;
+    private InterstitialAd interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,27 @@ public class MainActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webV);
         etUrl = (EditText) findViewById(R.id.etUrl);
         btnCari = (Button) findViewById(R.id.btnCari);
+
+        //inisialisasi iklan
+        madView = (AdView) findViewById(R.id.adView);
+        madView.loadAd(new AdRequest.Builder().build());
+
+        //menyiapkan iklan untuk interstitial ad
+        interstitial = new InterstitialAd(MainActivity.this);
+
+        //masukan id iklan
+        interstitial.setAdUnitId(getString(R.string.admob_interensial_id));
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        //muat iklan interensial
+        interstitial.loadAd(adRequest);
+        //persiapkan iklan interensial
+        interstitial.setAdListener(new AdListener() {
+            public void onAdLoaded() {
+                //memanggil display
+                displayInterstitial();
+            }
+        });
 
         //url default
         String url = "https://www.google.co.id/";
@@ -88,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private class MyWebLaunch extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -110,5 +140,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void displayInterstitial() {
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
     }
 }
